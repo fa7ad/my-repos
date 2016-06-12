@@ -1,0 +1,1 @@
+{"version":3,"sources":["main.styl"],"names":[],"mappings":"AAAA;EACE,OAAM,KAAN;EACA,kBAAiB,KAAjB;EACA,aAAY,aAAZ","file":"main.css","sourceRoot":"/source/","sourcesContent":["body\n  color white\n  background-color #111\n  text-shadow 0 0 1px cyan"]}

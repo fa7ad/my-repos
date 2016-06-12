@@ -4,7 +4,6 @@
     "react-router": "registry:npm/react-router#2.0.0+20160610174037"
   },
   "globalDependencies": {
-    "history": "registry:dt/history#1.8.0+20160316155526",
     "lodash": "registry:dt/lodash#3.10.0+20160330154726",
     "material-ui": "registry:dt/material-ui#0.15.0+20160608102658",
     "node": "registry:dt/node#6.0.0+20160608110640",

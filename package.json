@@ -28,6 +28,7 @@
     "autoprefixer": "^6.3.6",
     "browser-sync": "^2.13.0",
     "connect-history-api-fallback": "^1.2.0",
+    "expose-loader": "^0.7.1",
     "gulp": "github:gulpjs/gulp#4.0",
     "gulp-plumber": "^1.1.0",
     "gulp-sourcemaps": "^1.6.0",
