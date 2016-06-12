@@ -1,0 +1,43 @@
+{
+  "name": "my-boilerplate",
+  "version": "1.0.0",
+  "description": "Minimal boilerplate for my personal use",
+  "main": "./dist/app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fa7ad/my-boilerplate.git"
+  },
+  "author": "Fahad Hossain <8bit.demoncoder@gmail.com> (http://fahad.gq/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fa7ad/my-boilerplate/issues"
+  },
+  "homepage": "https://github.com/fa7ad/my-boilerplate#readme",
+  "dependencies": {
+    "lodash": "^4.13.1",
+    "material-ui": "^0.15.0",
+    "react": "^15.1.0",
+    "react-dom": "^15.1.0",
+    "react-router": "^2.4.1",
+    "react-tap-event-plugin": "^1.0.0"
+  },
+  "devDependencies": {
+    "autoprefixer": "^6.3.6",
+    "browser-sync": "^2.13.0",
+    "connect-history-api-fallback": "^1.2.0",
+    "gulp": "github:gulpjs/gulp#4.0",
+    "gulp-plumber": "^1.1.0",
+    "gulp-sourcemaps": "^1.6.0",
+    "gulp-stylus": "^2.4.0",
+    "rimraf": "^2.5.2",
+    "source-map-loader": "^0.1.5",
+    "ts-loader": "^0.8.2",
+    "typescript": "^1.8.10",
+    "typings": "^1.0.5",
+    "webpack": "^1.13.1",
+    "webpack-stream": "^3.2.0"
+  }
+}
