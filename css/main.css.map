@@ -1,1 +1,0 @@
-{"version":3,"sources":["main.styl"],"names":[],"mappings":"AACE;AAAG;EACD,aAAY,aAAZ;EACA,OAAM,KAAN","file":"main.css","sourceRoot":"/source/","sourcesContent":[".home\n  h1,h3\n    text-shadow 0 0 1px cyan\n    color black\n"]}

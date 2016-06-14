@@ -1,13 +1,14 @@
 // node@6.x
 const gulp = require('gulp');
+const del = require('del');
 const stylus = require('gulp-stylus');
 const plumber = require('gulp-plumber');
 const sourcemaps = require('gulp-sourcemaps');
-const rimraf = require('rimraf');
 const BrowserSync = require('browser-sync').create();
 const webpack = require('webpack-stream');
 const webpackConf = require('./webpack.config.js');
 const historyApiFallback = require('connect-history-api-fallback');
+const isProduction = (process.env.NODE_ENV === 'production');
 
 const paths = {
   entry: './src/Index.tsx',
@@ -17,7 +18,6 @@ const paths = {
   stylWatch: ['./styl/**/*.styl'],
   css: './css'
 };
-
 
 gulp.task('browser-sync', () => BrowserSync.init({
     server: '.',
@@ -31,8 +31,7 @@ gulp.task('browser-sync', () => BrowserSync.init({
   })
 );
 
-gulp.task('clean-js', cb => rimraf(paths.dist, cb));
-gulp.task('clean-css', cb => rimraf(paths.css, cb));
+gulp.task('clean', () => del([paths.dist, paths.css]));
 
 gulp.task('typescript', () => gulp.src(paths.entry)
   .pipe(
@@ -47,31 +46,28 @@ gulp.task('typescript', () => gulp.src(paths.entry)
   .pipe(BrowserSync.reload({stream: true}))
 );
 
-gulp.task('watch', () => {
-  gulp.watch(paths.stylWatch, gulp.parallel('stylusDev'));
-});
-
-gulp.task('stylusDev', () => gulp.src(paths.style)
-  .pipe(sourcemaps.init())
-  .pipe(stylus())
-  .pipe(sourcemaps.write('.'))
-  .pipe(gulp.dest(paths.css))
-  .pipe(BrowserSync.reload({stream: true}))
-);
-
-gulp.task('stylusProd', () => gulp.src(paths.style)
-  .pipe(stylus({
-    compress: true
-  }))
-  .pipe(gulp.dest(paths.css))
+gulp.task('stylus', () => {
+  let task = gulp.src(paths.style);
+  if(isProduction){
+    task.pipe(stylus({compress: true}));
+  }else{
+    task.pipe(sourcemaps.init())
+      .pipe(stylus())
+      .pipe(sourcemaps.write('.'));
+  }
+  return task.pipe(gulp.dest(paths.css))
+    .pipe(BrowserSync.reload({stream: true}));
+  }
 );
 
 gulp.task('build', gulp.series(
-  'clean-js', 'clean-css', gulp.parallel('typescript', 'stylusProd'))
+  'clean', gulp.parallel('typescript', 'stylus'))
 );
 
-gulp.task('default',
-  gulp.series('clean-css', 'clean-js',
-    gulp.parallel('typescript', 'stylusDev', 'browser-sync', 'watch')
-  )
-);
+gulp.task('watch', () => gulp.watch(paths.stylWatch, gulp.parallel('stylus')));
+
+if(isProduction){
+  gulp.task('default', gulp.series('build'));
+}else{
+  gulp.task('default', gulp.series(gulp.parallel('browser-sync', 'build'), 'watch'));
+}
