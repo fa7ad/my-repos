@@ -11,7 +11,7 @@ class About extends Component<{}, {}>{
   render(){
     return (
       <div className='text-center'>
-        <h1>Hello, World!</h1>
+        <h1>About me</h1>
         <h3>&mdash; from React and TS</h3>
       </div>
     );

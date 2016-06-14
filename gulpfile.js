@@ -27,7 +27,8 @@ gulp.task('browser-sync', () => BrowserSync.init({
       'css/*.css',
       '*.html',
       'dist/*.js'
-    ]
+    ],
+    port: process.env.PORT || 3000
   })
 );
 
