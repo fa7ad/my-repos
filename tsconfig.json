@@ -5,7 +5,8 @@
         "noImplicitAny": false,
         "sourceMap": true,
         "jsx": "react",
-        "outDir": "./dist/"
+        "outDir": "./dist/",
+        "experimentalDecorators": true
     },
     "files": [
         "./typings/index.d.ts",

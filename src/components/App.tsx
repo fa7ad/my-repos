@@ -1,6 +1,12 @@
 import * as React from 'react';
+import {observer} from 'mobx-react';
+
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
+
+import Container from './bootstrap/Container';
+import Header from './Header';
+import State from '../Store';
 
 const muiTheme = getMuiTheme({
   appBar: {
@@ -8,15 +14,20 @@ const muiTheme = getMuiTheme({
   }
 }, typeof window === 'undefined' ? {userAgent: 'all'} : null);
 
-interface AppProps {}
-interface AppStates {}
+interface AppProps {
+  children: JSX.Element | string;
+}
 
-class App extends React.Component<AppProps, AppStates> {
+@observer
+class App extends React.Component<AppProps, {}> {
   render(){
     return (
       <MuiThemeProvider muiTheme={muiTheme}>
-        <div className="app">
-          {this.props.children || 'Oh hello, Its 404!'}
+        <div>
+          <Header title="@fa7ad" pageTitle={State.title || ""}/>
+          <Container fluid={false}>
+            {this.props.children || 'Oh hello, Its 404!'}
+          </Container>
         </div>
       </MuiThemeProvider>
     );

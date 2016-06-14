@@ -1,3 +1,4 @@
+const webpack = require('webpack');
 module.exports = {
     entry: "./src/Index.tsx",
     output: {
@@ -16,5 +17,9 @@ module.exports = {
         preLoaders: [
             { test: /\.js$/, loader: "source-map-loader" }
         ]
-    }
+    },
+    watch: true,
+    plugins: [
+        new webpack.NoErrorsPlugin()
+    ]
 };
