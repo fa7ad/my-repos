@@ -44,7 +44,8 @@ class Header extends React.Component<Props, States> {
       <header>
         <AppBar
           title={this.props.title + this.props.pageTitle}
-          onLeftIconButtonTouchTap={this.handleTouchTap}/>
+          onLeftIconButtonTouchTap={this.handleTouchTap}
+        />
         <Popover
           open={this.state.menuOpen}
           anchorEl={this.state.anchorEl}

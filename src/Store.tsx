@@ -1,14 +1,18 @@
 import {observable} from 'mobx';
 
 class MyStates {
-  @observable title:string = '';
+  @observable private _title: string = '';
 
-  setTitle(title:string = ''){
-    let prefix:string = ''
-    if(title.length > 1)
-      prefix = '\u00BB'
-    this.title = ` ${prefix} ${title}`;
+  set title(newTitle:string) {
+    let prefix: string = '';
+    if(newTitle.length > 1) prefix = '\u00BB';
+    this._title = ` ${prefix} ${newTitle}`;
   }
+
+  get title() {
+    return this._title;
+  }
+
 }
 
 const State = new MyStates();

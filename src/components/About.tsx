@@ -1,11 +1,14 @@
 import * as React from 'react';
 import {Component} from 'react';
 
+const title = require('title');
+
 import State from '../Store';
 
 class About extends Component<{}, {}>{
   componentWillMount(){
-    State.setTitle('About')
+    State.title = 'About';
+    title('About - %o');
   }
 
   render(){

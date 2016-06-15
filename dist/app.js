@@ -45543,18 +45543,24 @@
 	var mobx_1 = __webpack_require__(234);
 	var MyStates = (function () {
 	    function MyStates() {
-	        this.title = '';
+	        this._title = '';
 	    }
-	    MyStates.prototype.setTitle = function (title) {
-	        if (title === void 0) { title = ''; }
-	        var prefix = '';
-	        if (title.length > 1)
-	            prefix = '\u00BB';
-	        this.title = " " + prefix + " " + title;
-	    };
+	    Object.defineProperty(MyStates.prototype, "title", {
+	        get: function () {
+	            return this._title;
+	        },
+	        set: function (newTitle) {
+	            var prefix = '';
+	            if (newTitle.length > 1)
+	                prefix = '\u00BB';
+	            this._title = " " + prefix + " " + newTitle;
+	        },
+	        enumerable: true,
+	        configurable: true
+	    });
 	    __decorate([
 	        mobx_1.observable
-	    ], MyStates.prototype, "title", void 0);
+	    ], MyStates.prototype, "_title", void 0);
 	    return MyStates;
 	}());
 	var State = new MyStates();
@@ -45574,6 +45580,7 @@
 	};
 	var React = __webpack_require__(164);
 	var react_1 = __webpack_require__(164);
+	var title = __webpack_require__(406);
 	var Store_1 = __webpack_require__(397);
 	var Home = (function (_super) {
 	    __extends(Home, _super);
@@ -45581,7 +45588,8 @@
 	        _super.apply(this, arguments);
 	    }
 	    Home.prototype.componentWillMount = function () {
-	        Store_1.default.setTitle('Home');
+	        Store_1.default.title = 'Home';
+	        title('Home - %o');
 	    };
 	    Home.prototype.render = function () {
 	        return (React.createElement("div", {className: 'text-center home'}, React.createElement("h1", null, "Hello, World!"), React.createElement("h3", null, "— from React and TS")));
@@ -45605,6 +45613,7 @@
 	};
 	var React = __webpack_require__(164);
 	var react_1 = __webpack_require__(164);
+	var title = __webpack_require__(406);
 	var Store_1 = __webpack_require__(397);
 	var About = (function (_super) {
 	    __extends(About, _super);
@@ -45612,7 +45621,8 @@
 	        _super.apply(this, arguments);
 	    }
 	    About.prototype.componentWillMount = function () {
-	        Store_1.default.setTitle('About');
+	        Store_1.default.title = 'About';
+	        title('About - %o');
 	    };
 	    About.prototype.render = function () {
 	        return (React.createElement("div", {className: 'text-center'}, React.createElement("h1", null, "About me"), React.createElement("h3", null, "— from React and TS")));
@@ -45986,6 +45996,33 @@
 	};
 	
 	module.exports = keyOf;
+
+/***/ },
+/* 406 */
+/***/ function(module, exports) {
+
+	
+	var orig = document.title;
+	
+	exports = module.exports = set;
+	
+	function set(str) {
+	  var i = 1;
+	  var args = arguments;
+	  document.title = str.replace(/%[os]/g, function(_){
+	    switch (_) {
+	      case '%o':
+	        return orig;
+	      case '%s':
+	        return args[i++];
+	    }
+	  });
+	}
+	
+	exports.reset = function(){
+	  set(orig);
+	};
+
 
 /***/ }
 /******/ ]);
