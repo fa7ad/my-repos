@@ -11,6 +11,12 @@ app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
+/*
+app.use('/my-repos/', Express.static(__dirname));
+app.get('/my-repos/*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
+*/
 
 app.listen(PORT, HOST, () => console.log(`Listening on http://${HOST}:${PORT}`));
 

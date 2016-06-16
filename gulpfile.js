@@ -50,16 +50,15 @@ gulp.task('typescript', () => gulp.src(paths.entry)
 gulp.task('stylus', () => {
   let task = gulp.src(paths.style);
   if(isProduction){
-    task.pipe(stylus({compress: true}));
+    return task.pipe(stylus({compress: true})).pipe(gulp.dest(paths.css));
   }else{
-    task.pipe(sourcemaps.init())
+    return task.pipe(sourcemaps.init())
       .pipe(stylus())
-      .pipe(sourcemaps.write('.'));
+      .pipe(sourcemaps.write('.'))
+      .pipe(gulp.dest(paths.css))
+      .pipe(BrowserSync.reload({stream: true}));
   }
-  return task.pipe(gulp.dest(paths.css))
-    .pipe(BrowserSync.reload({stream: true}));
-  }
-);
+});
 
 gulp.task('build', gulp.series(
   'clean', gulp.parallel('typescript', 'stylus'))
