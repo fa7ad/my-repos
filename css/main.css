@@ -11,7 +11,7 @@ body {
   color: #000;
 }
 .repo-icon {
-  padding: 30%;
+  padding: 0 30%;
 }
 .repo-icon svg {
   width: 40%;
