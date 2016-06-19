@@ -47,7 +47,7 @@
 	"use strict";
 	var react_dom_1 = __webpack_require__(1);
 	var Router_1 = __webpack_require__(163);
-	__webpack_require__(425)();
+	__webpack_require__(426)();
 	react_dom_1.render(Router_1.default, document.getElementById('root'));
 
 
@@ -19671,8 +19671,8 @@
 	var React = __webpack_require__(164);
 	var react_router_1 = __webpack_require__(171);
 	var App_1 = __webpack_require__(232);
-	var MyRepos_1 = __webpack_require__(432);
-	var About_1 = __webpack_require__(424);
+	var MyRepos_1 = __webpack_require__(397);
+	var About_1 = __webpack_require__(425);
 	var Routes = (React.createElement(react_router_1.Router, {history: react_router_1.hashHistory}, React.createElement(react_router_1.Route, {path: "/", component: App_1.default}, React.createElement(react_router_1.IndexRoute, {component: MyRepos_1.default}), React.createElement(react_router_1.Route, {path: "about", component: About_1.default}))));
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.default = Routes;
@@ -45257,7 +45257,61 @@
 
 
 /***/ },
-/* 397 */,
+/* 397 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var React = __webpack_require__(164);
+	var title = __webpack_require__(398);
+	var react_1 = __webpack_require__(164);
+	var Store_1 = __webpack_require__(396);
+	var RepoGrid_1 = __webpack_require__(399);
+	var agent = __webpack_require__(419);
+	agent
+	    .get('https://api.github.com/users/fa7ad/repos')
+	    .auth('fa7ad', atob("YTRkYmY2OTY1MjQxMTI2ZWNiZDU5ZGI3ZjYxMDlmYjZhNzFmNzliZA=="))
+	    .end(function (error, repos) {
+	    repos.body.forEach(function (repo) {
+	        agent
+	            .get(repo.languages_url)
+	            .auth('fa7ad', atob("YTRkYmY2OTY1MjQxMTI2ZWNiZDU5ZGI3ZjYxMDlmYjZhNzFmNzliZA=="))
+	            .end(function (err, lang) {
+	            Store_1.default.repos.push({
+	                id: repo.id,
+	                name: repo.name,
+	                languages: Object.keys(lang.body).join(', '),
+	                description: repo.description,
+	                type: (repo.fork ? 'fork' : 'source'),
+	                link: repo.html_url
+	            });
+	        });
+	    });
+	});
+	var MyRepos = (function (_super) {
+	    __extends(MyRepos, _super);
+	    function MyRepos() {
+	        _super.apply(this, arguments);
+	    }
+	    MyRepos.prototype.componentWillMount = function () {
+	        Store_1.default.title = 'My Repos';
+	        title('My Repos - %o');
+	    };
+	    MyRepos.prototype.render = function () {
+	        return (React.createElement("div", {className: 'home'}, React.createElement(RepoGrid_1.default, {repos: Store_1.default.repos})));
+	    };
+	    return MyRepos;
+	}(react_1.Component));
+	;
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = MyRepos;
+
+
+/***/ },
 /* 398 */
 /***/ function(module, exports) {
 
@@ -45294,10 +45348,47 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
 	var React = __webpack_require__(164);
-	var Card_1 = __webpack_require__(400);
-	var RaisedButton_1 = __webpack_require__(412);
-	var InlineSVG = __webpack_require__(414);
+	var mobx_react_1 = __webpack_require__(233);
+	var Repo_1 = __webpack_require__(400);
+	var RepoGrid = (function (_super) {
+	    __extends(RepoGrid, _super);
+	    function RepoGrid() {
+	        _super.apply(this, arguments);
+	    }
+	    RepoGrid.prototype.render = function () {
+	        var repos = this.props.repos.map(function (repo) { return (React.createElement("div", {key: repo.id, className: "repo"}, React.createElement(Repo_1.default, {name: repo.name, type: repo.type, languages: repo.languages, description: repo.description, link: repo.link}))); });
+	        return (React.createElement("div", {className: "repo-grid"}, repos));
+	    };
+	    RepoGrid = __decorate([
+	        mobx_react_1.observer
+	    ], RepoGrid);
+	    return RepoGrid;
+	}(React.Component));
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = RepoGrid;
+
+
+/***/ },
+/* 400 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var React = __webpack_require__(164);
+	var Card_1 = __webpack_require__(401);
+	var RaisedButton_1 = __webpack_require__(413);
+	var InlineSVG = __webpack_require__(415);
 	var Repo = (function (_super) {
 	    __extends(Repo, _super);
 	    function Repo() {
@@ -45305,7 +45396,7 @@
 	    }
 	    Repo.prototype.render = function () {
 	        var icon = (this.props.type === 'fork' ? 'repo-forked' : 'repo');
-	        return (React.createElement(Card_1.Card, null, React.createElement(Card_1.CardMedia, null, React.createElement(InlineSVG, {src: __webpack_require__(415)("./" + icon + ".svg"), className: "repo-icon"})), React.createElement(Card_1.CardTitle, {title: this.props.name, subtitle: this.props.languages.toUpperCase()}), React.createElement(Card_1.CardText, null, this.props.description), React.createElement(Card_1.CardActions, {expandable: false}, React.createElement("div", null, React.createElement(RaisedButton_1.default, {label: "GITHUB LINK", href: this.props.link, linkButton: true, primary: true})))));
+	        return (React.createElement(Card_1.Card, null, React.createElement(Card_1.CardMedia, null, React.createElement(InlineSVG, {src: __webpack_require__(416)("./" + icon + ".svg"), className: "repo-icon"})), React.createElement(Card_1.CardTitle, {title: this.props.name, subtitle: this.props.languages.toUpperCase()}), React.createElement(Card_1.CardText, null, this.props.description), React.createElement(Card_1.CardActions, {expandable: false}, React.createElement("div", null, React.createElement(RaisedButton_1.default, {label: "GITHUB LINK", href: this.props.link, linkButton: true, primary: true})))));
 	    };
 	    return Repo;
 	}(React.Component));
@@ -45315,7 +45406,7 @@
 
 
 /***/ },
-/* 400 */
+/* 401 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -45325,31 +45416,31 @@
 	});
 	exports.default = exports.CardExpandable = exports.CardActions = exports.CardText = exports.CardMedia = exports.CardTitle = exports.CardHeader = exports.Card = undefined;
 	
-	var _Card2 = __webpack_require__(401);
+	var _Card2 = __webpack_require__(402);
 	
 	var _Card3 = _interopRequireDefault(_Card2);
 	
-	var _CardHeader2 = __webpack_require__(405);
+	var _CardHeader2 = __webpack_require__(406);
 	
 	var _CardHeader3 = _interopRequireDefault(_CardHeader2);
 	
-	var _CardTitle2 = __webpack_require__(408);
+	var _CardTitle2 = __webpack_require__(409);
 	
 	var _CardTitle3 = _interopRequireDefault(_CardTitle2);
 	
-	var _CardMedia2 = __webpack_require__(409);
+	var _CardMedia2 = __webpack_require__(410);
 	
 	var _CardMedia3 = _interopRequireDefault(_CardMedia2);
 	
-	var _CardText2 = __webpack_require__(410);
+	var _CardText2 = __webpack_require__(411);
 	
 	var _CardText3 = _interopRequireDefault(_CardText2);
 	
-	var _CardActions2 = __webpack_require__(411);
+	var _CardActions2 = __webpack_require__(412);
 	
 	var _CardActions3 = _interopRequireDefault(_CardActions2);
 	
-	var _CardExpandable2 = __webpack_require__(402);
+	var _CardExpandable2 = __webpack_require__(403);
 	
 	var _CardExpandable3 = _interopRequireDefault(_CardExpandable2);
 	
@@ -45365,7 +45456,7 @@
 	exports.default = _Card3.default;
 
 /***/ },
-/* 401 */
+/* 402 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -45390,7 +45481,7 @@
 	
 	var _Paper2 = _interopRequireDefault(_Paper);
 	
-	var _CardExpandable = __webpack_require__(402);
+	var _CardExpandable = __webpack_require__(403);
 	
 	var _CardExpandable2 = _interopRequireDefault(_CardExpandable);
 	
@@ -45558,7 +45649,7 @@
 	exports.default = Card;
 
 /***/ },
-/* 402 */
+/* 403 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -45577,11 +45668,11 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _keyboardArrowUp = __webpack_require__(403);
+	var _keyboardArrowUp = __webpack_require__(404);
 	
 	var _keyboardArrowUp2 = _interopRequireDefault(_keyboardArrowUp);
 	
-	var _keyboardArrowDown = __webpack_require__(404);
+	var _keyboardArrowDown = __webpack_require__(405);
 	
 	var _keyboardArrowDown2 = _interopRequireDefault(_keyboardArrowDown);
 	
@@ -45648,7 +45739,7 @@
 	exports.default = CardExpandable;
 
 /***/ },
-/* 403 */
+/* 404 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -45684,7 +45775,7 @@
 	exports.default = HardwareKeyboardArrowUp;
 
 /***/ },
-/* 404 */
+/* 405 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -45720,7 +45811,7 @@
 	exports.default = HardwareKeyboardArrowDown;
 
 /***/ },
-/* 405 */
+/* 406 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -45741,7 +45832,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _Avatar = __webpack_require__(406);
+	var _Avatar = __webpack_require__(407);
 	
 	var _Avatar2 = _interopRequireDefault(_Avatar);
 	
@@ -45916,7 +46007,7 @@
 	exports.default = CardHeader;
 
 /***/ },
-/* 406 */
+/* 407 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -45926,7 +46017,7 @@
 	});
 	exports.default = undefined;
 	
-	var _Avatar = __webpack_require__(407);
+	var _Avatar = __webpack_require__(408);
 	
 	var _Avatar2 = _interopRequireDefault(_Avatar);
 	
@@ -45935,7 +46026,7 @@
 	exports.default = _Avatar2.default;
 
 /***/ },
-/* 407 */
+/* 408 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -46102,7 +46193,7 @@
 	exports.default = Avatar;
 
 /***/ },
-/* 408 */
+/* 409 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -46255,7 +46346,7 @@
 	exports.default = CardTitle;
 
 /***/ },
-/* 409 */
+/* 410 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -46438,7 +46529,7 @@
 	exports.default = CardMedia;
 
 /***/ },
-/* 410 */
+/* 411 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -46537,7 +46628,7 @@
 	exports.default = CardText;
 
 /***/ },
-/* 411 */
+/* 412 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -46641,7 +46732,7 @@
 	exports.default = CardActions;
 
 /***/ },
-/* 412 */
+/* 413 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -46651,7 +46742,7 @@
 	});
 	exports.default = undefined;
 	
-	var _RaisedButton = __webpack_require__(413);
+	var _RaisedButton = __webpack_require__(414);
 	
 	var _RaisedButton2 = _interopRequireDefault(_RaisedButton);
 	
@@ -46660,7 +46751,7 @@
 	exports.default = _RaisedButton2.default;
 
 /***/ },
-/* 413 */
+/* 414 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -47132,7 +47223,7 @@
 	exports.default = RaisedButton;
 
 /***/ },
-/* 414 */
+/* 415 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -47284,12 +47375,12 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 415 */
+/* 416 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var map = {
-		"./repo-forked.svg": 416,
-		"./repo.svg": 417
+		"./repo-forked.svg": 417,
+		"./repo.svg": 418
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -47302,33 +47393,33 @@
 	};
 	webpackContext.resolve = webpackContextResolve;
 	module.exports = webpackContext;
-	webpackContext.id = 415;
+	webpackContext.id = 416;
 
-
-/***/ },
-/* 416 */
-/***/ function(module, exports) {
-
-	module.exports = "<svg viewBox=\"0 0 10 16\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"><title>repo-forked</title><desc>Created with Sketch.</desc><defs></defs><g id=\"Octicons\" stroke=\"none\" stroke-width=\"1\" fill=\"none\" fill-rule=\"evenodd\"><g id=\"repo-forked\" fill=\"#000000\"><path d=\"M8,1 C6.89,1 6,1.89 6,3 C6,3.73 6.41,4.38 7,4.72 L7,6 L5,8 L3,6 L3,4.72 C3.59,4.38 4,3.74 4,3 C4,1.89 3.11,1 2,1 C0.89,1 0,1.89 0,3 C0,3.73 0.41,4.38 1,4.72 L1,6.5 L4,9.5 L4,11.28 C3.41,11.62 3,12.26 3,13 C3,14.11 3.89,15 5,15 C6.11,15 7,14.11 7,13 C7,12.27 6.59,11.62 6,11.28 L6,9.5 L9,6.5 L9,4.72 C9.59,4.38 10,3.74 10,3 C10,1.89 9.11,1 8,1 L8,1 Z M2,4.2 C1.34,4.2 0.8,3.65 0.8,3 C0.8,2.35 1.35,1.8 2,1.8 C2.65,1.8 3.2,2.35 3.2,3 C3.2,3.65 2.65,4.2 2,4.2 L2,4.2 Z M5,14.2 C4.34,14.2 3.8,13.65 3.8,13 C3.8,12.35 4.35,11.8 5,11.8 C5.65,11.8 6.2,12.35 6.2,13 C6.2,13.65 5.65,14.2 5,14.2 L5,14.2 Z M8,4.2 C7.34,4.2 6.8,3.65 6.8,3 C6.8,2.35 7.35,1.8 8,1.8 C8.65,1.8 9.2,2.35 9.2,3 C9.2,3.65 8.65,4.2 8,4.2 L8,4.2 Z\" id=\"Shape\"></path></g></g></svg>"
 
 /***/ },
 /* 417 */
 /***/ function(module, exports) {
 
-	module.exports = "<svg viewBox=\"0 0 12 16\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"><title>repo</title><desc>Created with Sketch.</desc><defs></defs><g id=\"Octicons\" stroke=\"none\" stroke-width=\"1\" fill=\"none\" fill-rule=\"evenodd\"><g id=\"repo\" fill=\"#000000\"><path d=\"M4,9 L3,9 L3,8 L4,8 L4,9 L4,9 Z M4,6 L3,6 L3,7 L4,7 L4,6 L4,6 Z M4,4 L3,4 L3,5 L4,5 L4,4 L4,4 Z M4,2 L3,2 L3,3 L4,3 L4,2 L4,2 Z M12,1 L12,13 C12,13.55 11.55,14 11,14 L6,14 L6,16 L4.5,14.5 L3,16 L3,14 L1,14 C0.45,14 0,13.55 0,13 L0,1 C0,0.45 0.45,0 1,0 L11,0 C11.55,0 12,0.45 12,1 L12,1 Z M11,11 L1,11 L1,13 L3,13 L3,12 L6,12 L6,13 L11,13 L11,11 L11,11 Z M11,1 L2,1 L2,10 L11,10 L11,1 L11,1 Z\" id=\"Shape\"></path></g></g></svg>"
+	module.exports = "<svg viewBox=\"0 0 10 16\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"><title>repo-forked</title><desc>Created with Sketch.</desc><defs></defs><g id=\"Octicons\" stroke=\"none\" stroke-width=\"1\" fill=\"none\" fill-rule=\"evenodd\"><g id=\"repo-forked\" fill=\"#000000\"><path d=\"M8,1 C6.89,1 6,1.89 6,3 C6,3.73 6.41,4.38 7,4.72 L7,6 L5,8 L3,6 L3,4.72 C3.59,4.38 4,3.74 4,3 C4,1.89 3.11,1 2,1 C0.89,1 0,1.89 0,3 C0,3.73 0.41,4.38 1,4.72 L1,6.5 L4,9.5 L4,11.28 C3.41,11.62 3,12.26 3,13 C3,14.11 3.89,15 5,15 C6.11,15 7,14.11 7,13 C7,12.27 6.59,11.62 6,11.28 L6,9.5 L9,6.5 L9,4.72 C9.59,4.38 10,3.74 10,3 C10,1.89 9.11,1 8,1 L8,1 Z M2,4.2 C1.34,4.2 0.8,3.65 0.8,3 C0.8,2.35 1.35,1.8 2,1.8 C2.65,1.8 3.2,2.35 3.2,3 C3.2,3.65 2.65,4.2 2,4.2 L2,4.2 Z M5,14.2 C4.34,14.2 3.8,13.65 3.8,13 C3.8,12.35 4.35,11.8 5,11.8 C5.65,11.8 6.2,12.35 6.2,13 C6.2,13.65 5.65,14.2 5,14.2 L5,14.2 Z M8,4.2 C7.34,4.2 6.8,3.65 6.8,3 C6.8,2.35 7.35,1.8 8,1.8 C8.65,1.8 9.2,2.35 9.2,3 C9.2,3.65 8.65,4.2 8,4.2 L8,4.2 Z\" id=\"Shape\"></path></g></g></svg>"
 
 /***/ },
 /* 418 */
+/***/ function(module, exports) {
+
+	module.exports = "<svg viewBox=\"0 0 12 16\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"><title>repo</title><desc>Created with Sketch.</desc><defs></defs><g id=\"Octicons\" stroke=\"none\" stroke-width=\"1\" fill=\"none\" fill-rule=\"evenodd\"><g id=\"repo\" fill=\"#000000\"><path d=\"M4,9 L3,9 L3,8 L4,8 L4,9 L4,9 Z M4,6 L3,6 L3,7 L4,7 L4,6 L4,6 Z M4,4 L3,4 L3,5 L4,5 L4,4 L4,4 Z M4,2 L3,2 L3,3 L4,3 L4,2 L4,2 Z M12,1 L12,13 C12,13.55 11.55,14 11,14 L6,14 L6,16 L4.5,14.5 L3,16 L3,14 L1,14 C0.45,14 0,13.55 0,13 L0,1 C0,0.45 0.45,0 1,0 L11,0 C11.55,0 12,0.45 12,1 L12,1 Z M11,11 L1,11 L1,13 L3,13 L3,12 L6,12 L6,13 L11,13 L11,11 L11,11 Z M11,1 L2,1 L2,10 L11,10 L11,1 L11,1 Z\" id=\"Shape\"></path></g></g></svg>"
+
+/***/ },
+/* 419 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Module dependencies.
 	 */
 	
-	var Emitter = __webpack_require__(419);
-	var reduce = __webpack_require__(420);
-	var requestBase = __webpack_require__(421);
-	var isObject = __webpack_require__(422);
+	var Emitter = __webpack_require__(420);
+	var reduce = __webpack_require__(421);
+	var requestBase = __webpack_require__(422);
+	var isObject = __webpack_require__(423);
 	
 	/**
 	 * Root reference for iframes.
@@ -47353,7 +47444,7 @@
 	 * Expose `request`.
 	 */
 	
-	var request = module.exports = __webpack_require__(423).bind(null, Request);
+	var request = module.exports = __webpack_require__(424).bind(null, Request);
 	
 	/**
 	 * Determine XHR.
@@ -48302,7 +48393,7 @@
 
 
 /***/ },
-/* 419 */
+/* 420 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -48471,7 +48562,7 @@
 
 
 /***/ },
-/* 420 */
+/* 421 */
 /***/ function(module, exports) {
 
 	
@@ -48500,13 +48591,13 @@
 	};
 
 /***/ },
-/* 421 */
+/* 422 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Module of mixed-in functions shared between node and client code
 	 */
-	var isObject = __webpack_require__(422);
+	var isObject = __webpack_require__(423);
 	
 	/**
 	 * Clear previous timeout.
@@ -48852,7 +48943,7 @@
 
 
 /***/ },
-/* 422 */
+/* 423 */
 /***/ function(module, exports) {
 
 	/**
@@ -48871,7 +48962,7 @@
 
 
 /***/ },
-/* 423 */
+/* 424 */
 /***/ function(module, exports) {
 
 	// The node and browser modules expose versions of this with the
@@ -48909,7 +49000,7 @@
 
 
 /***/ },
-/* 424 */
+/* 425 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -48942,11 +49033,11 @@
 
 
 /***/ },
-/* 425 */
+/* 426 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(process) {var invariant = __webpack_require__(426);
-	var defaultClickRejectionStrategy = __webpack_require__(427);
+	/* WEBPACK VAR INJECTION */(function(process) {var invariant = __webpack_require__(427);
+	var defaultClickRejectionStrategy = __webpack_require__(428);
 	
 	var alreadyInjected = false;
 	
@@ -48968,14 +49059,14 @@
 	  alreadyInjected = true;
 	
 	  __webpack_require__(14).injection.injectEventPluginsByName({
-	    'TapEventPlugin':       __webpack_require__(428)(shouldRejectClick)
+	    'TapEventPlugin':       __webpack_require__(429)(shouldRejectClick)
 	  });
 	};
 	
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 426 */
+/* 427 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -49030,7 +49121,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 427 */
+/* 428 */
 /***/ function(module, exports) {
 
 	module.exports = function(lastTouchEvent, clickTimestamp) {
@@ -49041,7 +49132,7 @@
 
 
 /***/ },
-/* 428 */
+/* 429 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -49069,10 +49160,10 @@
 	var EventPluginUtils = __webpack_require__(16);
 	var EventPropagators = __webpack_require__(13);
 	var SyntheticUIEvent = __webpack_require__(52);
-	var TouchEventUtils = __webpack_require__(429);
+	var TouchEventUtils = __webpack_require__(430);
 	var ViewportMetrics = __webpack_require__(53);
 	
-	var keyOf = __webpack_require__(430);
+	var keyOf = __webpack_require__(431);
 	var topLevelTypes = EventConstants.topLevelTypes;
 	
 	var isStartish = EventPluginUtils.isStartish;
@@ -49217,7 +49308,7 @@
 
 
 /***/ },
-/* 429 */
+/* 430 */
 /***/ function(module, exports) {
 
 	/**
@@ -49265,7 +49356,7 @@
 
 
 /***/ },
-/* 430 */
+/* 431 */
 /***/ function(module, exports) {
 
 	/**
@@ -49303,96 +49394,6 @@
 	};
 	
 	module.exports = keyOf;
-
-/***/ },
-/* 431 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var React = __webpack_require__(164);
-	var mobx_react_1 = __webpack_require__(233);
-	var Repo_1 = __webpack_require__(399);
-	var RepoGrid = (function (_super) {
-	    __extends(RepoGrid, _super);
-	    function RepoGrid() {
-	        _super.apply(this, arguments);
-	    }
-	    RepoGrid.prototype.render = function () {
-	        var repos = this.props.repos.map(function (repo) { return (React.createElement("div", {key: repo.id, className: "repo"}, React.createElement(Repo_1.default, {name: repo.name, type: repo.type, languages: repo.languages, description: repo.description, link: repo.link}))); });
-	        return (React.createElement("div", {className: "repo-grid"}, repos));
-	    };
-	    RepoGrid = __decorate([
-	        mobx_react_1.observer
-	    ], RepoGrid);
-	    return RepoGrid;
-	}(React.Component));
-	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.default = RepoGrid;
-
-
-/***/ },
-/* 432 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	var React = __webpack_require__(164);
-	var title = __webpack_require__(398);
-	var react_1 = __webpack_require__(164);
-	var Store_1 = __webpack_require__(396);
-	var RepoGrid_1 = __webpack_require__(431);
-	var agent = __webpack_require__(418);
-	agent
-	    .get('https://api.github.com/users/fa7ad/repos')
-	    .end(function (error, repos) {
-	    repos.body.forEach(function (repo) {
-	        agent
-	            .get(repo.languages_url)
-	            .end(function (err, lang) {
-	            Store_1.default.repos.push({
-	                id: repo.id,
-	                name: repo.name,
-	                languages: Object.keys(lang.body).join(', '),
-	                description: repo.description,
-	                type: (repo.fork ? 'fork' : 'source'),
-	                link: repo.html_url
-	            });
-	        });
-	    });
-	});
-	var MyRepos = (function (_super) {
-	    __extends(MyRepos, _super);
-	    function MyRepos() {
-	        _super.apply(this, arguments);
-	    }
-	    MyRepos.prototype.componentWillMount = function () {
-	        Store_1.default.title = 'My Repos';
-	        title('My Repos - %o');
-	    };
-	    MyRepos.prototype.render = function () {
-	        return (React.createElement("div", {className: 'home'}, React.createElement(RepoGrid_1.default, {repos: Store_1.default.repos})));
-	    };
-	    return MyRepos;
-	}(react_1.Component));
-	;
-	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.default = MyRepos;
-
 
 /***/ }
 /******/ ]);

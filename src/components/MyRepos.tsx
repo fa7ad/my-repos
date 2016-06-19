@@ -9,10 +9,12 @@ import * as agent from 'superagent';
 
 agent
   .get('https://api.github.com/users/fa7ad/repos')
+  .auth('fa7ad', atob("YTRkYmY2OTY1MjQxMTI2ZWNiZDU5ZGI3ZjYxMDlmYjZhNzFmNzliZA=="))
   .end((error, repos) => {
     repos.body.forEach(repo => {
       agent
         .get(repo.languages_url)
+        .auth('fa7ad', atob("YTRkYmY2OTY1MjQxMTI2ZWNiZDU5ZGI3ZjYxMDlmYjZhNzFmNzliZA=="))
         .end((err, lang) => {
           State.repos.push({
             id: repo.id,
