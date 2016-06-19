@@ -4,6 +4,7 @@ import {Component} from 'react';
 const title = require('title');
 
 import State from '../Store';
+import Repo from './Repo';
 
 class Home extends Component<{}, {}>{
   componentWillMount(){
@@ -13,9 +14,16 @@ class Home extends Component<{}, {}>{
 
   render(){
     return (
-      <div className='text-center home'>
-        <h1>Hello, World!</h1>
-        <h3>&mdash; from React and TS</h3>
+      <div className='home'>
+        <div className="col-md-4">
+          <Repo
+            name="my-repos"
+            languages="TypeScript, Stylus, HTML"
+            description="Testing out React"
+            type="source"
+            link="https://github.com/fa7ad/my-repos"
+          />
+        </div>
       </div>
     );
   }

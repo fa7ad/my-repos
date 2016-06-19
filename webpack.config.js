@@ -4,7 +4,6 @@ let config = {
   output: {
     filename: "app.js",
   },
-  devtool: "source-map",
   resolve: {
     extensions: ["", ".webpack.js", ".web.js", ".ts", ".tsx", ".js"]
   },
@@ -35,5 +34,8 @@ if (process.env.NODE_ENV === 'production'){
     new webpack.optimize.DedupePlugin()
   ];
   config.watch = false;
+}else{
+  config.devtool = "source-map";
 }
+
 module.exports = config;

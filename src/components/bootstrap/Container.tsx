@@ -10,7 +10,7 @@ class Container extends Component<BSProps, {}>{
 
   render(){
     return (
-      <div className={this.props.fluid ? 'container-fluid' : 'container'}>
+      <div className={'main ' + (this.props.fluid ? 'container-fluid' : 'container')}>
         {this.props.children}
       </div>
     );

@@ -10,7 +10,7 @@ import State from '../Store';
 
 const muiTheme = getMuiTheme({
   appBar: {
-  height: 50
+    height: 50
   }
 }, typeof window === 'undefined' ? {userAgent: 'all'} : null);
 

@@ -12,7 +12,7 @@ const isProduction = (process.env.NODE_ENV === 'production');
 
 const paths = {
   entry: './src/Index.tsx',
-  dist: './dist',
+  dist: './js',
   tsWatch: ['./src/**/**.ts', './src/**/**.tsx', './typings/**/**'],
   style: './styl/main.styl',
   stylWatch: ['./styl/**/*.styl'],
@@ -21,12 +21,13 @@ const paths = {
 
 gulp.task('browser-sync', () => BrowserSync.init({
     server: '.',
+    open: false,
     logFileChanges: false,
     middleware: [historyApiFallback()],
     files: [
       'css/*.css',
       '*.html',
-      'dist/*.js'
+      'js/*.js'
     ],
     port: process.env.PORT || 3000
   })
@@ -37,7 +38,7 @@ gulp.task('clean', () => del([paths.dist, paths.css]));
 gulp.task('typescript', () => gulp.src(paths.entry)
   .pipe(
     plumber({
-      errorHandler: err => console.log(err)
+      errorHandler: err => console.log(err.toString()||"")
     })
   )
   .pipe(
@@ -69,5 +70,5 @@ gulp.task('watch', () => gulp.watch(paths.stylWatch, gulp.parallel('stylus')));
 if(isProduction){
   gulp.task('default', gulp.series('build'));
 }else{
-  gulp.task('default', gulp.series(gulp.parallel('browser-sync', 'build'), 'watch'));
+  gulp.task('default', gulp.parallel('browser-sync', 'build', 'watch'));
 }

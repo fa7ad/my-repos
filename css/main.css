@@ -1,7 +1,17 @@
+.main.container {
+  padding-top: 50px;
+}
 .home h1,
 .home h3 {
   text-shadow: 0 0 1px #0ff;
   color: #000;
+}
+.repo-icon {
+  padding: 100px;
+}
+.repo-icon svg {
+  width: 50%;
+  padding: 50px 0;
 }
 
 /*# sourceMappingURL=main.css.map */
