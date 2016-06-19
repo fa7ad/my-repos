@@ -1,7 +1,16 @@
 import {observable} from 'mobx';
 
+interface Repo {
+  name: string;
+  languages: string;
+  description: string;
+  type: string;
+  link: string;
+}
+
 class MyStates {
   @observable private _title: string = '';
+  @observable repos: any[] = [];
 
   set title(newTitle:string) {
     let prefix: string = '';
