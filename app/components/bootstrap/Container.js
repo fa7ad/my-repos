@@ -1,13 +1,7 @@
 import * as React from 'react';
 import {Component} from 'react';
 
-interface BSProps {
-  fluid: boolean;
-  children?: JSX.Element | string;
-}
-
-class Container extends Component<BSProps, {}>{
-
+class Container extends Component {
   render(){
     return (
       <div className={'main ' + (this.props.fluid ? 'container-fluid' : 'container')}>

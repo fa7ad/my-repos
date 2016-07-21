@@ -1,11 +1,11 @@
-import * as React from 'react';
+import React from 'react';
 import {Router, Route, IndexRoute, hashHistory} from 'react-router';
 
 import App from './components/App';
 import MyRepos from './components/MyRepos';
 import About from './components/About';
 
-const Routes: JSX.Element = (
+const Routes = (
   <Router history={hashHistory}>
     <Route path="/" component={App}>
       <IndexRoute component={MyRepos} />

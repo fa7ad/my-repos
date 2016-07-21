@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
@@ -14,12 +14,8 @@ const muiTheme = getMuiTheme({
   }
 }, typeof window === 'undefined' ? {userAgent: 'all'} : null);
 
-interface AppProps {
-  children: JSX.Element | string;
-}
-
 @observer
-class App extends React.Component<AppProps, {}> {
+class App extends Component {
   render(){
     return (
       <MuiThemeProvider muiTheme={muiTheme}>

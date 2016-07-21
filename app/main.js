@@ -1,8 +1,9 @@
 import * as React from 'react';
 import {render} from 'react-dom';
+import tapPlugin from 'react-tap-event-plugin';
+import 'fetch';
 
 import Routes from './Router';
-require('react-tap-event-plugin')();
 
-
+tapPlugin();
 render(Routes, document.getElementById('root'));

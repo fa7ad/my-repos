@@ -1,27 +1,19 @@
-import * as React from 'react';
+import React, {Component} from 'react';
 import {Link} from 'react-router';
 
 import AppBar from 'material-ui/AppBar';
 import Popover from 'material-ui/Popover';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
+import FlatButton from 'material-ui/FlatButton';
+import Snackbar from 'material-ui/Snackbar';
 
-interface Props{
-  title: string;
-  pageTitle: string;
-}
-
-
-interface States {
-  menuOpen: boolean;
-  anchorEl?: any;
-}
-
-class Header extends React.Component<Props, States> {
+class Header extends Component {
   constructor() {
     super();
     this.state = {
-      menuOpen: false
+      menuOpen: false,
+      helpOpen: false
     };
   }
 
@@ -35,7 +27,14 @@ class Header extends React.Component<Props, States> {
 
   handleRequestClose =  () => {
     this.setState({
-      menuOpen: false
+      menuOpen: false,
+      helpOpen: false
+    });
+  }
+
+  showHelp = () => {
+    this.setState({
+      helpOpen: true
     });
   }
 
@@ -45,6 +44,12 @@ class Header extends React.Component<Props, States> {
         <AppBar
           title={this.props.title + this.props.pageTitle}
           onLeftIconButtonTouchTap={this.handleTouchTap}
+          iconElementRight={<FlatButton label="Search" onTouchTap={this.showHelp}/>}
+        />
+        <Snackbar
+          open={this.state.helpOpen}
+          message="Use your browser's search functionality to search. (Ctrl + F)"
+          autoHideDuration={1500}
         />
         <Popover
           open={this.state.menuOpen}

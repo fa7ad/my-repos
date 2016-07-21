@@ -1,27 +1,26 @@
-import * as React from 'react';
+import React, {Component} from 'react';
+
 import {
-  Card, CardActions, CardMedia, CardTitle, CardText
+  Card,
+  CardActions,
+  CardMedia,
+  CardTitle,
+  CardText
 } from 'material-ui/Card';
 import RaisedButton from 'material-ui/RaisedButton';
+import InlineSVG from 'svg-inline-react';
 
-const InlineSVG = require('svg-inline-react');
+import ForkedIcon from '../../images/repo-forked.svg!text';
+import SourceIcon from '../../images/repo.svg!text';
 
-interface Props{
-  name: string;
-  languages: string;
-  description: string;
-  type: string;
-  link: string;
-}
-
-class Repo extends React.Component<Props, {}> {
+class Repo extends Component {
   render(){
-    let icon = (this.props.type === 'fork' ? 'repo-forked' : 'repo');
+    let Icon = (this.props.type === 'fork' ? ForkedIcon : SourceIcon);
     return (
-      <Card>
+      <Card expandable={false}>
         <CardMedia>
           <InlineSVG
-            src={require(`svg-inline!../../images/${icon}.svg`) }
+            src={Icon}
             className="repo-icon"
             />
         </CardMedia>
@@ -30,12 +29,11 @@ class Repo extends React.Component<Props, {}> {
           subtitle={this.props.languages.toUpperCase()}
           />
         <CardText>{this.props.description}</CardText>
-        <CardActions expandable={false}>
+        <CardActions>
           <div>
             <RaisedButton
               label="GITHUB LINK"
               href={this.props.link}
-              linkButton={true}
               primary={true}
             />
           </div>
