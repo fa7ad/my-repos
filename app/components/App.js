@@ -9,10 +9,10 @@ import Header from './Header';
 import State from '../Store';
 
 const muiTheme = getMuiTheme({
-  appBar: {
-    height: 50
+  AppBar: {
+    height: 100
   }
-}, typeof window === 'undefined' ? {userAgent: 'all'} : null);
+}, null);
 
 @observer
 class App extends Component {
@@ -21,7 +21,7 @@ class App extends Component {
       <MuiThemeProvider muiTheme={muiTheme}>
         <div>
           <Header title="@fa7ad" pageTitle={State.title || ""}/>
-          <Container fluid={false}>
+          <Container fluid={true}>
             {this.props.children || 'Oh hello, Its 404!'}
           </Container>
         </div>

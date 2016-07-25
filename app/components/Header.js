@@ -1,13 +1,14 @@
 import React, {Component} from 'react';
+import {observer} from 'mobx-react';
 import {Link} from 'react-router';
 
 import AppBar from 'material-ui/AppBar';
-import Popover from 'material-ui/Popover';
-import Menu from 'material-ui/Menu';
+import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
 import FlatButton from 'material-ui/FlatButton';
 import Snackbar from 'material-ui/Snackbar';
 
+@observer
 class Header extends Component {
   constructor() {
     super();
@@ -25,7 +26,7 @@ class Header extends Component {
     });
   }
 
-  handleRequestClose =  () => {
+  handleClose = () => {
     this.setState({
       menuOpen: false,
       helpOpen: false
@@ -51,24 +52,23 @@ class Header extends Component {
           message="Use your browser's search functionality to search. (Ctrl + F)"
           autoHideDuration={1500}
         />
-        <Popover
+        <Drawer
+          docked={false}
+          width={200}
           open={this.state.menuOpen}
-          anchorEl={this.state.anchorEl}
-          anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
-          targetOrigin={{horizontal: 'left', vertical: 'top'}}
-          onRequestClose={this.handleRequestClose}
+          onRequestChange={(open) => this.setState({menuOpen: open})}
         >
-          <Menu onItemTouchTap={this.handleRequestClose}>
-            <MenuItem
-              primaryText='My Repos'
-              containerElement={<Link to='/'/>}
-            />
-            <MenuItem
-              primaryText='About'
-              containerElement={<Link to='/about'/>}
-            />
-          </Menu>
-        </Popover>
+          <MenuItem
+            primaryText='My Repos'
+            containerElement={<Link to='/'/>}
+            onTouchTap={this.handleClose}
+          />
+          <MenuItem
+            primaryText='About'
+            containerElement={<Link to='/about'/>}
+            onTouchTap={this.handleClose}
+          />
+        </Drawer>
       </header>
     );
   }
