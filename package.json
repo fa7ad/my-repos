@@ -20,7 +20,7 @@
   "homepage": "https://github.com/fa7ad/my-boilerplate#readme",
   "dependencies": {},
   "devDependencies": {
-    "html-dist": "^0.2.2",
+    "html-dist": "^1.0.1",
     "jspm": "^0.16.39",
     "stylus": "^0.54.5",
     "uglifyjs": "^2.4.10"
